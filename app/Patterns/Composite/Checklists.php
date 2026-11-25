@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Composite;
 
 use App\Enums\Office;

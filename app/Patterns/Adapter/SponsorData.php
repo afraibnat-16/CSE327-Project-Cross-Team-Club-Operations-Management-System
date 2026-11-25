@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Adapter;
 
 use App\Enums\Office;
@@ -18,20 +19,28 @@ interface SponsorData
 {
     // Which stage the sponsor is in now.
     public function stage(): Stage;
+
     // Has the deal been marked as finalized?
     public function dealFinalized(): bool;
+
     // Has an amount above zero been agreed?
     public function hasAgreedAmount(): bool;
+
     // Has at least one representative been added?
     public function hasRepresentative(): bool;
+
     // Does their booth need electricity?
     public function requiresElectricity(): bool;
+
     // Has the booth setup been arranged?
     public function setupArranged(): bool;
+
     /** 'pending', 'submitted' or 'approved' */
     public function approvalStatus(Office $office): string;
+
     // Have they arrived on campus on at least one event day?
     public function arrived(): bool;
+
     // Have they left the campus on every event day?
     public function left(): bool;
 }

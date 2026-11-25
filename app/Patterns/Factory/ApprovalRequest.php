@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Factory;
 
 use App\Enums\Office;

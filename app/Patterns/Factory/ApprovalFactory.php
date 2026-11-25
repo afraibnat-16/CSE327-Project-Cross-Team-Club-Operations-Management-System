@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Factory;
 
 use App\Enums\Office;
@@ -15,9 +16,9 @@ final class ApprovalFactory
     public static function make(Office $office): ApprovalRequest
     {
         return match ($office) {
-            Office::StudentAffairs => new StudentAffairsApproval(),
-            Office::OpsManagement  => new OpsManagementApproval(),
-            Office::GatePass       => new GatePassApproval(),
+            Office::StudentAffairs => new StudentAffairsApproval,
+            Office::OpsManagement => new OpsManagementApproval,
+            Office::GatePass => new GatePassApproval,
         };
     }
 

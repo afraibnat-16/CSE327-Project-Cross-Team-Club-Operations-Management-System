@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Facade;
 
 use App\Enums\Stage;
@@ -10,8 +11,8 @@ use App\Enums\Stage;
 final class StageReport
 {
     /**
-     * @param string[] $missing  what still blocks the next stage
-     * @param string[] $warnings things to watch, but that do not block
+     * @param  string[]  $missing  what still blocks the next stage
+     * @param  string[]  $warnings  things to watch, but that do not block
      */
     public function __construct(
         public readonly Stage $current,     // the stage the sponsor is in now

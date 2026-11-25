@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Facade;
 
 use App\Enums\Office;
@@ -27,7 +28,7 @@ final class StageTracker
     // The main entry point: where is this sponsor, and what is still missing?
     public function evaluate(SponsorData $sponsor): StageReport
     {
-        $current   = $sponsor->stage();
+        $current = $sponsor->stage();
         $checklist = Checklists::toLeave($current);   // the rules for leaving this stage
 
         if ($checklist === null) {            // Completed or Cancelled

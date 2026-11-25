@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Adapter;
 
 use App\Enums\Office;
