@@ -6,6 +6,7 @@ use App\Enums\Stage;
 use App\Enums\Team;
 use App\Models\Approval;
 use App\Models\Note;
+use App\Models\Representative;
 use App\Models\Sponsor;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -94,7 +95,30 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // ---- 4. A few notes from different members. ----
+        // ---- 4. Representatives: the people each sponsor sends to campus. ----
+        // Kite Coffee (index 0) is still negotiating, so it has none yet;
+        // that is one of the things it still needs before Approval.
+        $representatives = [
+            1 => [['Nadia Karim', '01911000001'], ['Shafiq Uddin', '01911000002']],
+            2 => [['Rakib Hasan', '01911000003']],
+            3 => [['Mehedi Hasan', '01911000004']],
+            4 => [['Farzana Yasmin', '01911000005'], ['Jubayer Ahmed', '01911000006']],
+            5 => [['Sharmin Akter', '01911000007']],
+            6 => [['Kamrul Islam', '01911000008']],
+            7 => [['Anika Tabassum', '01911000009']],
+        ];
+
+        foreach ($representatives as $sponsorIndex => $people) {
+            foreach ($people as [$name, $phone]) {
+                Representative::create([
+                    'sponsor_id' => $sponsors[$sponsorIndex]->id,
+                    'name' => $name,
+                    'phone' => $phone,
+                ]);
+            }
+        }
+
+        // ---- 5. A few notes from different members. ----
         $notes = [
             [0, $corporate, 'They want a spot near the main gate.', now()->addDays(2)],
             [1, $admin, 'Student Affairs asked for the bank\'s trade licence.', now()->addDay()],
