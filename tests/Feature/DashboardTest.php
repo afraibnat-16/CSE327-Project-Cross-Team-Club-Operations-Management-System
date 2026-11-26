@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,5 +24,13 @@ class DashboardTest extends TestCase
 
         $response = $this->get('/dashboard');
         $response->assertStatus(200);
+    }
+
+    public function test_dashboard_shows_member_name_and_team(): void
+    {
+        $user = User::factory()->create(['name' => 'Tasnim Rahman', 'team' => Team::Admin]);
+        $this->actingAs($user);
+
+        $this->get('/dashboard')->assertSee('Tasnim Rahman, Admin team');
     }
 }
