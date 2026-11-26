@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Enums;
 
 // The stages a sponsor moves through, in order.
@@ -7,19 +6,31 @@ namespace App\Enums;
 enum Stage: string
 {
     case Negotiation = 'negotiation';
-    case Approval = 'approval';
-    case Logistics = 'logistics';
-    case Ready = 'ready';
-    case OnCampus = 'on_campus';
-    case Completed = 'completed';
-    case Cancelled = 'cancelled';
+    case Approval    = 'approval';
+    case Logistics   = 'logistics';
+    case Ready       = 'ready';
+    case OnCampus    = 'on_campus';
+    case Completed   = 'completed';
+    case Cancelled   = 'cancelled';
 
-    // A human-friendly name to show on screen, e.g. "On campus".
+    // The name shown on screens.
     public function label(): string
     {
         return match ($this) {
             self::OnCampus => 'On campus',
-            default => ucfirst($this->value),
+            default        => ucfirst($this->value),
+        };
+    }
+
+    // The team that has to act while a sponsor is in this stage.
+    // Completed and Cancelled are finished, so nobody owns them (null).
+    public function owner(): ?Team
+    {
+        return match ($this) {
+            self::Negotiation                       => Team::Corporate,
+            self::Approval                          => Team::Admin,
+            self::Logistics, self::Ready, self::OnCampus => Team::Provision,
+            self::Completed, self::Cancelled        => null,
         };
     }
 }
