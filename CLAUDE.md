@@ -8,7 +8,7 @@ NSU ACM CAP Force sponsor-tracking system. Course project, CSE327.
 
 ## Stack
 
-Laravel 12 (PHP 8.3), Livewire + Volt + Flux UI, Blade, Tailwind v4 (Vite), MySQL (SQLite while developing), PHPUnit. Built on the official Laravel Livewire starter kit; so far only the starter kit's auth/settings scaffolding exists.
+Laravel 12 (PHP 8.3), Livewire + Volt + Flux UI, Blade, Tailwind v4 (Vite), MySQL (SQLite while developing), PHPUnit. Built on the official Laravel Livewire starter kit. Work follows day-by-day guides in `docs/dayN.md`.
 
 ## Hard rules
 
@@ -53,4 +53,5 @@ vendor/bin/pint                       # code style (CI runs this)
 
 - **Write tests as PHPUnit classes, not Pest.** `tests/Pest.php` exists, but Pest is not installed. Write each test as a class extending `Tests\TestCase`, and add `RefreshDatabase` when it touches the DB. Unit tests for pure pattern classes can extend `PHPUnit\Framework\TestCase`.
 - **`bootstrap/providers.php` registers a class that doesn't exist.** It names `App\Providers\FolioServiceProvider`, but that class is missing and Folio isn't installed.
-- **Empty folders aren't in git.** `app/Patterns/*` and `docs/*` are empty, so git doesn't track them. Add a `.gitkeep` to each folder, or a real file, so the folders reach the repo.
+- **Empty folders aren't in git.** A pattern or docs folder only reaches GitHub once it holds a file (or a `.gitkeep`).
+- **Livewire is v4**, not v3. `config/livewire.php` points full-page components at `components.layouts.app`; keep that, or the Settings pages break.
