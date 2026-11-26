@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Observer;
 
 use App\Enums\Stage;
@@ -17,8 +18,8 @@ final class MemberNotifier implements StageObserver
     // Called by the publisher. Builds one message and stores it for each team to tell.
     public function update(StageChange $change): void
     {
-        $message = $change->sponsorName . ' moved from ' . $change->from->label()
-            . ' to ' . $change->to->label() . '.';
+        $message = $change->sponsorName.' moved from '.$change->from->label()
+            .' to '.$change->to->label().'.';
 
         foreach ($this->teamsToTell($change->to) as $team) {
             ($this->store)($team->value, $change->sponsorId, $message);
@@ -31,11 +32,11 @@ final class MemberNotifier implements StageObserver
     private function teamsToTell(Stage $stage): array
     {
         return match ($stage) {
-            Stage::Approval  => [Team::Admin],
+            Stage::Approval => [Team::Admin],
             Stage::Logistics => [Team::Provision, Team::Admin],
             Stage::Ready, Stage::OnCampus, Stage::Cancelled => [Team::Coordinator],
             Stage::Completed => [Team::Coordinator, Team::Corporate],
-            default          => [],
+            default => [],
         };
     }
 }

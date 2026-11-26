@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Singleton;
 
 use Closure;
@@ -20,18 +21,21 @@ final class ActivityLogger
 {
     // The one and only object. Empty (null) until someone first asks for it.
     private static ?ActivityLogger $instance = null;
+
     // The log lines collected so far (in memory).
     private array $entries = [];
+
     private ?Closure $writer = null;   // optional: saves each entry somewhere (the database)
 
     private function __construct() {}   // nobody outside can call new
+
     private function __clone() {}       // nobody can make a copy with clone
 
     // Returns the single logger. Creates it the first time, reuses it after.
     public static function getInstance(): ActivityLogger
     {
         // "??=" means: if $instance is still null, create it; then return it.
-        return self::$instance ??= new ActivityLogger();
+        return self::$instance ??= new ActivityLogger;
     }
 
     // Tell the logger where to save entries. Pass null to stop saving.

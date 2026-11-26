@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Feature;
 
 use App\Enums\Stage;
@@ -20,7 +21,7 @@ class SponsorServiceTest extends TestCase
     // A complete new sponsor, built with the Builder pattern, plus one representative.
     private function newSponsorData(): array
     {
-        $data = (new SponsorBuilder())
+        $data = (new SponsorBuilder)
             ->name('Test Co')
             ->contact('Rafi Ahmed', '01700000000')
             ->amount(50000)
@@ -35,8 +36,8 @@ class SponsorServiceTest extends TestCase
     public function test_finalizing_a_complete_deal_moves_it_to_approval(): void
     {
         $this->seed();
-        $user    = User::firstOrFail();
-        $actor   = new Actor($user->id, $user->name, Team::Corporate);
+        $user = User::firstOrFail();
+        $actor = new Actor($user->id, $user->name, Team::Corporate);
         $service = Services::sponsors();
 
         $id = $service->createSponsor($this->newSponsorData(), $actor);
@@ -51,7 +52,7 @@ class SponsorServiceTest extends TestCase
     public function test_creating_a_sponsor_adds_three_pending_approvals(): void
     {
         $this->seed();
-        $user  = User::firstOrFail();
+        $user = User::firstOrFail();
         $actor = new Actor($user->id, $user->name, Team::Corporate);
 
         $id = Services::sponsors()->createSponsor($this->newSponsorData(), $actor);
@@ -63,7 +64,7 @@ class SponsorServiceTest extends TestCase
     public function test_admin_cannot_finalize_a_deal(): void
     {
         $this->seed();
-        $user  = User::firstOrFail();
+        $user = User::firstOrFail();
         $actor = new Actor($user->id, $user->name, Team::Admin);
 
         $this->expectException(AccessDenied::class);
@@ -75,8 +76,8 @@ class SponsorServiceTest extends TestCase
     public function test_cancelling_a_sponsor_sets_the_cancelled_stage(): void
     {
         $this->seed();
-        $user    = User::firstOrFail();
-        $actor   = new Actor($user->id, $user->name, Team::Corporate);
+        $user = User::firstOrFail();
+        $actor = new Actor($user->id, $user->name, Team::Corporate);
         $service = Services::sponsors();
 
         $id = $service->createSponsor($this->newSponsorData(), $actor);

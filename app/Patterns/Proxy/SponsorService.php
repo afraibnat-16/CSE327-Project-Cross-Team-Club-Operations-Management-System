@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Proxy;
 
 use App\Enums\Stage;
@@ -43,7 +44,7 @@ final class SponsorService implements SponsorServiceInterface
         $sponsor = DB::transaction(function () use ($data, $representative) {
             // "+" adds these two values (a new sponsor always starts here).
             $sponsor = Sponsor::create($data + [
-                'stage'       => Stage::Negotiation,
+                'stage' => Stage::Negotiation,
                 'deal_status' => 'negotiating',
             ]);
 
@@ -106,9 +107,9 @@ final class SponsorService implements SponsorServiceInterface
     public function addNote(int $sponsorId, string $body, ?string $followUpOn, Actor $actor): void
     {
         Note::create([
-            'sponsor_id'   => $sponsorId,
-            'user_id'      => $actor->id,
-            'body'         => $body,
+            'sponsor_id' => $sponsorId,
+            'user_id' => $actor->id,
+            'body' => $body,
             'follow_up_on' => $followUpOn,
         ]);
 
@@ -125,7 +126,7 @@ final class SponsorService implements SponsorServiceInterface
             $sponsor->load(['approvals', 'representatives', 'eventDays']);
 
             $from = $sponsor->stage;
-            $to   = $this->tracker->stageAfterChecks(new EloquentSponsorAdapter($sponsor));
+            $to = $this->tracker->stageAfterChecks(new EloquentSponsorAdapter($sponsor));
 
             if ($to === $from) {
                 return;

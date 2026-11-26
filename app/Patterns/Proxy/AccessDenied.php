@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Proxy;
 
 use RuntimeException;
@@ -7,6 +8,4 @@ use RuntimeException;
 // "The admin team cannot do this." in a red banner.
 
 /** Thrown by the proxy when a team is not allowed to do something. */
-final class AccessDenied extends RuntimeException
-{
-}
+final class AccessDenied extends RuntimeException {}

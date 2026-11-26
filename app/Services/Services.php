@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\ActivityLog;
@@ -29,24 +30,24 @@ final class Services
         $logger = ActivityLogger::getInstance();
         $logger->setWriter(fn (array $e) => ActivityLog::create([
             'sponsor_id' => $e['sponsorId'],
-            'user_id'    => $e['userId'],
-            'action'     => $e['action'],
-            'details'    => $e['details'],
+            'user_id' => $e['userId'],
+            'action' => $e['action'],
+            'details' => $e['details'],
         ]));
 
         // The Observer publisher, with its two observers.
-        $publisher = new StageChangePublisher();
+        $publisher = new StageChangePublisher;
         $publisher->attach(new ActivityLogObserver($logger));
         $publisher->attach(new MemberNotifier(
             fn (string $team, int $sponsorId, string $message) => Notice::create([
-                'team'       => $team,
+                'team' => $team,
                 'sponsor_id' => $sponsorId,
-                'message'    => $message,
+                'message' => $message,
             ])
         ));
 
         // The real service, wrapped in the permission-checking proxy.
-        $real = new SponsorService(new StageTracker(), $publisher, $logger);
+        $real = new SponsorService(new StageTracker, $publisher, $logger);
 
         return new SponsorServiceProxy($real, $logger);
     }

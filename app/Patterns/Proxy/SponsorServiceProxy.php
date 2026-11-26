@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Proxy;
 
 use App\Enums\Team;
@@ -19,9 +20,9 @@ final class SponsorServiceProxy implements SponsorServiceInterface
     private const RULES = [
         'createSponsor' => [Team::Corporate, Team::Coordinator],
         'updateSponsor' => [Team::Corporate, Team::Coordinator],
-        'finalizeDeal'  => [Team::Corporate, Team::Coordinator],
-        'cancelDeal'    => [Team::Corporate, Team::Coordinator],
-        'addNote'       => [Team::Corporate, Team::Admin, Team::Provision, Team::Coordinator],
+        'finalizeDeal' => [Team::Corporate, Team::Coordinator],
+        'cancelDeal' => [Team::Corporate, Team::Coordinator],
+        'addNote' => [Team::Corporate, Team::Admin, Team::Provision, Team::Coordinator],
     ];
 
     // $real is the service that does the work; $logger records blocked attempts.
@@ -70,8 +71,8 @@ final class SponsorServiceProxy implements SponsorServiceInterface
             return;
         }
 
-        $this->logger->log($sponsorId, $actor->id, 'access_denied', $actor->team->value . ' tried: ' . $action);
+        $this->logger->log($sponsorId, $actor->id, 'access_denied', $actor->team->value.' tried: '.$action);
 
-        throw new AccessDenied('The ' . $actor->team->value . ' team cannot do this.');
+        throw new AccessDenied('The '.$actor->team->value.' team cannot do this.');
     }
 }

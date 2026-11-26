@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Observer;
 
 // OBSERVER PATTERN - the "subject" (also called the publisher).

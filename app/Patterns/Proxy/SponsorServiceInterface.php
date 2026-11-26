@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Proxy;
 
 use App\Patterns\Support\Actor;

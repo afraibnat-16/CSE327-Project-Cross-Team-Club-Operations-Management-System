@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Support;
 
 use App\Enums\Team;

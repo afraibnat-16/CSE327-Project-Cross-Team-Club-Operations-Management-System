@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit\Patterns;
 
 use App\Enums\Stage;
@@ -20,11 +21,32 @@ class FakeSponsorService implements SponsorServiceInterface
 {
     public array $calls = [];
 
-    public function createSponsor(array $data, Actor $actor): int { $this->calls[] = 'createSponsor'; return 1; }
-    public function updateSponsor(int $sponsorId, array $data, Actor $actor): void { $this->calls[] = 'updateSponsor'; }
-    public function finalizeDeal(int $sponsorId, Actor $actor): void { $this->calls[] = 'finalizeDeal'; }
-    public function cancelDeal(int $sponsorId, Actor $actor): void { $this->calls[] = 'cancelDeal'; }
-    public function addNote(int $sponsorId, string $body, ?string $followUpOn, Actor $actor): void { $this->calls[] = 'addNote'; }
+    public function createSponsor(array $data, Actor $actor): int
+    {
+        $this->calls[] = 'createSponsor';
+
+        return 1;
+    }
+
+    public function updateSponsor(int $sponsorId, array $data, Actor $actor): void
+    {
+        $this->calls[] = 'updateSponsor';
+    }
+
+    public function finalizeDeal(int $sponsorId, Actor $actor): void
+    {
+        $this->calls[] = 'finalizeDeal';
+    }
+
+    public function cancelDeal(int $sponsorId, Actor $actor): void
+    {
+        $this->calls[] = 'cancelDeal';
+    }
+
+    public function addNote(int $sponsorId, string $body, ?string $followUpOn, Actor $actor): void
+    {
+        $this->calls[] = 'addNote';
+    }
 }
 
 /** An observer that just counts how often it was told. */
@@ -32,7 +54,10 @@ class CountingObserver implements StageObserver
 {
     public int $told = 0;
 
-    public function update(StageChange $change): void { $this->told++; }
+    public function update(StageChange $change): void
+    {
+        $this->told++;
+    }
 }
 
 // Tests for the Day 3 patterns. No database is needed: the proxy is tested with a
@@ -59,7 +84,9 @@ class PatternsDay3Test extends TestCase
     {
         $saved = [];
         $logger = ActivityLogger::getInstance();
-        $logger->setWriter(function (array $entry) use (&$saved) { $saved[] = $entry; });
+        $logger->setWriter(function (array $entry) use (&$saved) {
+            $saved[] = $entry;
+        });
 
         $logger->log(7, 1, 'note_added', 'Called the sponsor');
 
@@ -72,9 +99,9 @@ class PatternsDay3Test extends TestCase
     // Two attached observers are both told once.
     public function test_publisher_tells_every_observer(): void
     {
-        $a = new CountingObserver();
-        $b = new CountingObserver();
-        $publisher = new StageChangePublisher();
+        $a = new CountingObserver;
+        $b = new CountingObserver;
+        $publisher = new StageChangePublisher;
         $publisher->attach($a);
         $publisher->attach($b);
 
@@ -87,8 +114,8 @@ class PatternsDay3Test extends TestCase
     // After detach(), the observer hears nothing.
     public function test_a_detached_observer_is_not_told(): void
     {
-        $a = new CountingObserver();
-        $publisher = new StageChangePublisher();
+        $a = new CountingObserver;
+        $publisher = new StageChangePublisher;
         $publisher->attach($a);
         $publisher->detach($a);
 
@@ -127,7 +154,9 @@ class PatternsDay3Test extends TestCase
     public function test_notifier_tells_provision_and_admin_at_logistics(): void
     {
         $teams = [];
-        $notifier = new MemberNotifier(function (string $team) use (&$teams) { $teams[] = $team; });
+        $notifier = new MemberNotifier(function (string $team) use (&$teams) {
+            $teams[] = $team;
+        });
 
         $notifier->update($this->change(Stage::Approval, Stage::Logistics));
 
@@ -139,7 +168,7 @@ class PatternsDay3Test extends TestCase
     // Corporate is allowed to finalize, so the call reaches the (fake) real service.
     public function test_proxy_passes_an_allowed_call_through(): void
     {
-        $fake  = new FakeSponsorService();
+        $fake = new FakeSponsorService;
         $proxy = new SponsorServiceProxy($fake, ActivityLogger::getInstance());
 
         $proxy->finalizeDeal(7, new Actor(1, 'Rafi', Team::Corporate));
@@ -150,7 +179,7 @@ class PatternsDay3Test extends TestCase
     // Admin is not allowed, so AccessDenied is thrown and the real service is never called.
     public function test_proxy_blocks_a_team_that_is_not_allowed(): void
     {
-        $fake  = new FakeSponsorService();
+        $fake = new FakeSponsorService;
         $proxy = new SponsorServiceProxy($fake, ActivityLogger::getInstance());
 
         try {
@@ -165,7 +194,7 @@ class PatternsDay3Test extends TestCase
     public function test_proxy_logs_a_blocked_attempt(): void
     {
         $logger = ActivityLogger::getInstance();
-        $proxy  = new SponsorServiceProxy(new FakeSponsorService(), $logger);
+        $proxy = new SponsorServiceProxy(new FakeSponsorService, $logger);
 
         try {
             $proxy->cancelDeal(7, new Actor(3, 'Nila', Team::Provision));
@@ -178,7 +207,7 @@ class PatternsDay3Test extends TestCase
     // Notes are open to all four teams.
     public function test_every_team_may_add_a_note(): void
     {
-        $fake  = new FakeSponsorService();
+        $fake = new FakeSponsorService;
         $proxy = new SponsorServiceProxy($fake, ActivityLogger::getInstance());
 
         foreach (Team::cases() as $team) {

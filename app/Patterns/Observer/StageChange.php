@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Observer;
 
 use App\Enums\Stage;

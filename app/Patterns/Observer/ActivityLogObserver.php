@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Patterns\Observer;
 
 use App\Patterns\Singleton\ActivityLogger;
@@ -16,7 +17,7 @@ final class ActivityLogObserver implements StageObserver
             $change->sponsorId,
             $change->actor->id,
             'stage_changed',
-            $change->from->label() . ' to ' . $change->to->label()
+            $change->from->label().' to '.$change->to->label()
         );
     }
 }
